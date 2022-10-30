@@ -1,10 +1,36 @@
 const { metrics } = require('@opentelemetry/api-metrics');
+const { trace, SpanStatusCode } = require('@opentelemetry/api');
+const { doWork } = require('./services/syntheticWorker.js');
 
-const counter = metrics.getMeter('default').createCounter('reqCount');
+// Obtain instruments, used to generate telemetry
+const tracer = trace.getTracer('myTracer');
+const failureCounter = metrics.getMeter('default').createCounter('failureCount', {
+  description: 'total amount of failed responses',
+  unit: 'invocations',
+});
+const latencyHistogram = metrics
+  .getMeter('default')
+  .createHistogram('workLatency', { description: 'time taken to do work', unit: 'milliseconds' });
 
-console.log('Doing work and incrementing...');
-counter.add(1, { someAttribute: 'someValue' });
-counter.add(2, { someAttribute: 'someValue' });
-console.log('Done doing work');
-
-setTimeout(() => console.log('bye'), 4000); // 4000ms timeout to allow exporters to finish. Lifecycle hooks in FaaS should remove this concern
+// Main logic
+(async () => {
+  await tracer.startActiveSpan('main batch process', async (span) => {
+    for (let i = 0; i < 10; i++) {
+      await tracer.startActiveSpan('process item', async (span) => {
+        const startTime = new Date();
+        try {
+          await doWork();
+        } catch (e) {
+          span.recordException(e);
+          span.setStatus({ code: SpanStatusCode.ERROR });
+          failureCounter.add(1);
+        } finally {
+          span.end();
+          latencyHistogram.record(new Date() - startTime);
+        }
+      });
+    }
+    span.end(); // MUST end your spans, else they won't be captured
+  });
+  setTimeout(() => console.log('bye'), 4000); // timeout to allow exporters to finish. Or should we explicitly flush here?. Lifecycle hooks in FaaS should remove this concern
+})();
