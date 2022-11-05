@@ -3,6 +3,8 @@ const { Resource /*, envDetector, processDetector */ } = require('@opentelemetry
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions'); // use standard attribute names in telemetry
 
 // Auto instrumentation. See @opentelemetry/auto-instrumentations-node for easier setup
+// View available instrumentation libraries @ https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node
+// or https://opentelemetry.io/registry/?language=js&component=instrumentation
 const { registerInstrumentations } = require('@opentelemetry/instrumentation'); // adds (auto)instrumentation libs
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http'); // HTTP instr, required by express instrumentation
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express'); // express instrumentation
