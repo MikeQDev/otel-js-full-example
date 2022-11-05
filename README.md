@@ -14,10 +14,11 @@ client.js <--> store.js <--> inventory.js <--> SQLite DB
 ## Running locally, sending telemetry through OTel collector to backends
 
 1. `npm i`
-2. `cd docker/ && docker-compose up -d && cd ..` # to start OTelCollector + backends
+2. `docker-compose -f docker/docker-compose.yml up -d` # to start OTelCollector + backends
 3. `docker logs -f otel-collector` # to watch collector logs
 4. `USE_COLLECTOR=Y OTEL_SERVICE_NAME="myService" OTEL_SERVICE_VERSION="0.1.0" node -r ./src/otel/otel-util.js ./src/index.js`
 5. Visit below URLs to view metrics and traces
+6. When done experimenting, shut down containers with `docker-compose -f docker/docker-compose.yml down`
 
 URLs:
 
