@@ -1,3 +1,4 @@
+const { trace } = require('@opentelemetry/api');
 const express = require('express');
 const { doWork } = require('./syntheticWorker');
 const app = express();
@@ -31,6 +32,9 @@ app.get('/products/:id', async function (req, res) {
   try {
     await doWork({ errorRate: 0.05, minSleepTime: 75 });
   } catch (e) {
+    // record the exception on the span so we can view it in the tracer UI
+    // MUST occur before sending express response, as sending response ends the span
+    trace.getActiveSpan().recordException(e);
     // setting 500 status will automatically tag the parent span (GET /products/:id) with error=true
     res.sendStatus(500);
     return;
