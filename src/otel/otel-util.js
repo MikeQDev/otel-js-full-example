@@ -30,7 +30,7 @@ const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 
 // DEV or PROD? If production, don't write telemetry to console
-const exportOtelCollector = false;
+const exportOtelCollector = process.env.USE_COLLECTOR === 'Y' || false;
 const metricExportIntervalMs = 3000;
 
 // Metrics

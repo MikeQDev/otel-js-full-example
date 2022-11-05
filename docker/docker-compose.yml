@@ -1,0 +1,44 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin:2.23
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - local-otel-experiment
+  jaeger:
+    image: jaegertracing/all-in-one:1.38
+    container_name: my-jaeger
+    ports:
+      - 6831:6831/udp
+      - 16686:16686
+    networks:
+      - local-otel-experiment
+  prometheus:
+    image: prom/prometheus:v2.29.2
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus/config.yml/:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--enable-feature=exemplar-storage'
+    ports:
+      - 9090:9090
+    networks:
+      - local-otel-experiment
+  collector:
+    image: otel/opentelemetry-collector:0.62.1
+    container_name: otel-collector
+    volumes:
+      - ./config/collector/config.yml:/etc/opentelemetry-collector.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - '--config=/etc/opentelemetry-collector.yml'
+    networks:
+      - local-otel-experiment
+    ports:
+      - 4317:4317
+      - 13133:13133
+      - 8889:8889
+networks:
+  local-otel-experiment:

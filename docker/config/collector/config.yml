@@ -1,0 +1,39 @@
+# File used to configure how collector receives, processes, and exports signals (traces, metrics, logs)
+# View available components @ https://github.com/open-telemetry/opentelemetry-collector-contrib under receivers, processors, and exporters directory
+
+receivers: # how collector obtains signals from upstream apps or collectors
+  otlp:
+    protocols:
+      grpc:
+  # prometheus: # pulls/scrapes metrics directly from a source, if needed (i.e.: PULL from /metrics endpoint instead of metrics PUSHed to collector via OTLP)
+  #  config:
+  #    scrape_configs:
+  #      - job_name: "localhost"
+  #        scrape_interval: 5s
+  #        static_configs:
+  #        - targets: ["192.168.4.170:9464"]
+
+exporters: # downstream consumers/backends to store + display signals
+  jaeger:
+    endpoint: my-jaeger:14250
+    tls:
+      insecure: true
+  logging/info:
+    loglevel: INFO
+  logging/debug:
+    loglevel: DEBUG
+  zipkin:
+    endpoint: http://zipkin:9411/api/v2/spans
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service: # 'pipeline' for each signal. NOTE: processors can be included as well
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [jaeger, zipkin, logging/debug]
+    metrics:
+      receivers: [otlp] #, prometheus]
+      exporters: [logging/debug, prometheus]
