@@ -33,6 +33,7 @@ URLs:
 
 - View OTel instrumentation configuration file at `./src/otel/otel-util.js`
 - Look for any mention of `@opentelemetry/api` in the app source files
+- Review collector config file at `docker/config/collector/config.yml`
 
 ## Calculating SLIs
 
