@@ -1,5 +1,5 @@
 const { metrics } = require('@opentelemetry/api-metrics');
-const { trace, SpanStatusCode } = require('@opentelemetry/api');
+const { trace } = require('@opentelemetry/api');
 const { doWork } = require('./services/syntheticWorker.js');
 
 // Obtain instruments, used to generate telemetry
@@ -8,9 +8,10 @@ const failureCounter = metrics.getMeter('default').createCounter('failureCount',
   description: 'total amount of failed responses',
   unit: 'invocations',
 });
-const latencyHistogram = metrics
-  .getMeter('default')
-  .createHistogram('workLatency', { description: 'time taken to do work', unit: 'milliseconds' });
+const latencyHistogram = metrics.getMeter('default').createHistogram('workLatency', {
+  description: 'time taken to do work',
+  unit: 'milliseconds',
+});
 
 // Main logic
 (async () => {
@@ -21,8 +22,9 @@ const latencyHistogram = metrics
         try {
           await doWork();
         } catch (e) {
-          span.recordException(e);
-          span.setStatus({ code: SpanStatusCode.ERROR });
+          // redundant acting on this span, since doWork has its own span that captures errors
+          // span.recordException(e);
+          // span.setStatus({ code: SpanStatusCode.ERROR });
           failureCounter.add(1);
         } finally {
           span.end();
