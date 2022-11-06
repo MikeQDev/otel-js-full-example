@@ -29,7 +29,7 @@ app.get('/products', function (req, res) {
 app.get('/products/:id', async function (req, res) {
   const productId = req.params.id;
   try {
-    await doWork({ errorRate: 0.05, minSleepTime: 75 });
+    await doWork({ errorRate: 0.05, minSleepTime: 75 }); // Simulate DB call
   } catch (e) {
     // trace.getActiveSpan().recordException(e); // Redundant, since worker captures error in own span
     // Further thoughts: if not redundant, how about recording error in a middleware layer?
