@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start:docker:containers": "docker-compose -f docker/docker-compose.yml up -d",
+    "stop:docker:containers": "docker-compose -f docker/docker-compose.yml down",
     "start:store": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=store OTEL_SERVICE_VERSION=0.2.1 node -r ./src/otel/otel-util.js src/services/store.js",
     "start:store:nocollector": "OTEL_SERVICE_NAME=store OTEL_SERVICE_VERSION=0.2.1 node -r ./src/otel/otel-util.js src/services/store.js",
     "start:inventory": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=inventory OTEL_SERVICE_VERSION=0.1.0 node -r ./src/otel/otel-util.js src/services/inventory.js",

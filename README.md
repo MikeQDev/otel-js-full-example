@@ -12,11 +12,11 @@
 ### Running locally, sending telemetry through OTel collector to backends
 
 1. `npm i`
-2. `docker-compose -f docker/docker-compose.yml up -d` # to start OTelCollector + backends
+2. `npm run start:docker:containers` # to start OTelCollector + backends
 3. `docker logs -f otel-collector` # to watch collector logs
 4. `USE_COLLECTOR=Y OTEL_SERVICE_NAME="myService" OTEL_SERVICE_VERSION="0.1.0" node -r ./src/otel/otel-util.js ./src/index.js`
 5. Visit below URLs to view metrics and traces
-6. When done experimenting, shut down containers with `docker-compose -f docker/docker-compose.yml down`
+6. When done experimenting, shut down containers with `npm run stop:docker:containers`
 
 URLs:
 
@@ -35,11 +35,15 @@ client.js <--> store.js <--> inventory.js <s><--> SQLite DB</s>
 
 ### Setup instructions
 
+Pre-reqs: docker + docker-compose, npm
+
 _Note: if you cannot run docker containers for any reason, you can append :nocollector to the end of below NPM scripts to write to use console exporter instead_
 
 1. `npm i`
-2. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
-3. `npm run start:store` # starts store service on port [21469](http://localhost:21469/)
+2. `npm run start:docker:containers` # starts docker containers (OTel collector + backends)
+3. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
+4. `npm run start:store` # starts store service on port [21469](http://localhost:21469/)
+5. When done, stop docker containers with `npm run stop:docker:containers` and close terminal sessions running services
 
 ## Learning
 
