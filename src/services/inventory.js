@@ -1,4 +1,3 @@
-const { trace } = require('@opentelemetry/api');
 const express = require('express');
 const { doWork } = require('./syntheticWorker');
 const app = express();
@@ -30,12 +29,12 @@ app.get('/products', function (req, res) {
 app.get('/products/:id', async function (req, res) {
   const productId = req.params.id;
   try {
-    await doWork({ errorRate: 0.05, minSleepTime: 75 });
+    await doWork({ errorRate: 0.5, minSleepTime: 75 });
   } catch (e) {
-    // record the exception on the span so we can view it in the tracer UI
-    // MUST occur before sending express response, as sending response ends the span
-    trace.getActiveSpan().recordException(e);
-    // setting 500 status will automatically tag the parent span (GET /products/:id) with error=true
+    // trace.getActiveSpan().recordException(e); // Redundant, since worker captures error in own span
+    // Further thoughts: if not redundant, how about recording error in a middleware layer?
+    // NOTE: setting 500 status, express instrumentation will automatically
+    // tag the parent span (GET /products/:id) with error=true
     res.sendStatus(500);
     return;
   }
