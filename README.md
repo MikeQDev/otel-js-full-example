@@ -2,16 +2,14 @@
 
 ## Use this repo to learn how NodeJS apps can be easily instrumented with OpenTelemetry
 
-### Project Flow
+## Basic Example
 
-client.js <--> store.js <--> inventory.js <--> SQLite DB
-
-## Running locally, sending telemetry to console
+### Running locally, sending telemetry to console
 
 1. `npm i`
 2. `OTEL_SERVICE_NAME="myService" OTEL_SERVICE_VERSION="0.1.0" node -r ./src/otel/otel-util.js ./src/index.js`
 
-## Running locally, sending telemetry through OTel collector to backends
+### Running locally, sending telemetry through OTel collector to backends
 
 1. `npm i`
 2. `docker-compose -f docker/docker-compose.yml up -d` # to start OTelCollector + backends
@@ -29,10 +27,24 @@ URLs:
 - Prometheus Metrics UI @ [localhost:9090](http://localhost:9090)
 - Future: Grafana for logs, metrics, and traces?
 
+## Real-World Example
+
+### Project Flow
+
+client.js <--> store.js <--> inventory.js <s><--> SQLite DB</s>
+
+### Setup instructions
+
+_Note: if you cannot run docker containers for any reason, you can append :nocollector to the end of below NPM scripts to write to use console exporter instead_
+
+1. `npm i`
+2. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
+
 ## Learning
 
 - View OTel instrumentation configuration file at `./src/otel/otel-util.js`
 - Look for any mention of `@opentelemetry/api` in the app source files
+- Review collector config file at `docker/config/collector/config.yml`
 
 ## Calculating SLIs
 
