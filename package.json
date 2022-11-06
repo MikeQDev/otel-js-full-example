@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start:store": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=store OTEL_SERVICE_VERSION=0.2.1 node -r ./src/otel/otel-util.js src/services/store.js",
+    "start:store:nocollector": "OTEL_SERVICE_NAME=store OTEL_SERVICE_VERSION=0.2.1 node -r ./src/otel/otel-util.js src/services/store.js",
     "start:inventory": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=inventory OTEL_SERVICE_VERSION=0.1.0 node -r ./src/otel/otel-util.js src/services/inventory.js",
     "start:inventory:nocollector": "OTEL_SERVICE_NAME=inventory OTEL_SERVICE_VERSION=0.1.0 node -r ./src/otel/otel-util.js src/services/inventory.js",
     "prepare": "husky install"
@@ -24,6 +26,7 @@
     "@opentelemetry/sdk-metrics": "^0.33.0",
     "@opentelemetry/sdk-trace-node": "^1.7.0",
     "@opentelemetry/semantic-conventions": "^1.7.0",
+    "axios": "^1.1.3",
     "express": "^4.18.2"
   },
   "devDependencies": {

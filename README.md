@@ -39,14 +39,28 @@ _Note: if you cannot run docker containers for any reason, you can append :nocol
 
 1. `npm i`
 2. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
+3. `npm run start:store` # starts store service on port [21469](http://localhost:21469/)
 
 ## Learning
 
 - View OTel instrumentation configuration file at `./src/otel/otel-util.js`
 - Look for any mention of `@opentelemetry/api` in the app source files
 - Review collector config file at `docker/config/collector/config.yml`
+- Explore autoinstrumentation libraries @ https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node and https://opentelemetry.io/registry/?language=js&component=instrumentation
 
-## Calculating SLIs
+## Traces
+
+### Propagation
+
+HTTP autoinstumentation uses the w3c `traceparent` header to propagate trace context (e.g.: `traceparent: 00-f9a18b1af2ef4e5528a94447dc14c40c-94cb165768e69f30-01`)
+
+## Metrics
+
+### Thoughts
+
+If you're using serverless technologies from a single cloud provider (e.g.: API GW + Lambda), and need metrics unrelated to your business logic (e.g. status codes), check if your cloud provider offers these metrics for you out out-of-the-box. This can save you some time getting up and running with OTel, so you can focus more of your efforts on implementing reliable tracing
+
+### Calculating SLIs
 
 Prometheus can be used to calculate SLIs from metrics
 
