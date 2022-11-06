@@ -20,6 +20,11 @@ const initialInventory = {
     price: 2.95,
     quantity: 30,
   },
+  2500: {
+    name: 'candy',
+    price: 0.99,
+    quantity: 0,
+  },
 };
 
 app.get('/products', function (req, res) {
