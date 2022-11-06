@@ -29,6 +29,7 @@ app.get('/products', function (req, res) {
 app.get('/products/:id', async function (req, res) {
   const productId = req.params.id;
   try {
+    // TODO: figure out how to add doWork as a child span of /products/:id
     await doWork({ errorRate: 0.05, minSleepTime: 75 }); // Simulate DB call
   } catch (e) {
     // trace.getActiveSpan().recordException(e); // Redundant, since worker captures error in own span
