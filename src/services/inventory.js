@@ -30,7 +30,12 @@ app.get('/products/:id', async function (req, res) {
   const productId = req.params.id;
   try {
     // TODO: figure out how to add doWork as a child span of /products/:id
-    await doWork({ errorRate: 0.05, minSleepTime: 75 }); // Simulate DB call
+    await doWork({
+      errorRate: 0.05,
+      minSleepTime: 75,
+      errorMessage: 'Failed to obtain product from DB',
+      spanName: 'get product from DB',
+    }); // Simulate DB call
     const product = initialInventory[productId];
     if (product) {
       res.send(product);

@@ -1,11 +1,17 @@
 const { trace, SpanStatusCode } = require('@opentelemetry/api');
 
 // Synthetic async service
-exports.doWork = async ({ errorRate = 0.2, variableSleepTime = 1000, minSleepTime = 0 } = {}) => {
-  await trace.getTracer('default').startActiveSpan('doWork', async (span) => {
+exports.doWork = async ({
+  errorRate = 0.2,
+  variableSleepTime = 1000,
+  minSleepTime = 0,
+  errorMessage = 'Unexpected failure',
+  spanName = 'doWork',
+} = {}) => {
+  await trace.getTracer('default').startActiveSpan(spanName, async (span) => {
     if (Math.random() < errorRate) {
       // errorRate% of time, requests should encounter this (i.e.: .2 = 20% errors)
-      const error = new Error('Unexpected failure');
+      const error = new Error(errorMessage);
       // span.setAttribute('error', true); // I believe this does the same as setting statuscode to ERROR
       span.setStatus({ code: SpanStatusCode.ERROR });
       span.recordException(error);
