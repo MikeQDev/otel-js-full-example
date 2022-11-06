@@ -31,9 +31,11 @@ URLs:
 
 ### Project Flow
 
-client.js <--> store.js <--> inventory.js <--> SQLite DB
+client.js <--> store.js <--> inventory.js <s><--> SQLite DB</s>
 
 ### Setup instructions
+
+_Note: if you cannot run docker containers for any reason, you can append :nocollector to the end of below NPM scripts to write to use console exporter instead_
 
 1. `npm i`
 2. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
