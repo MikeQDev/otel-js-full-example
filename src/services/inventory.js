@@ -31,19 +31,18 @@ app.get('/products/:id', async function (req, res) {
   try {
     // TODO: figure out how to add doWork as a child span of /products/:id
     await doWork({ errorRate: 0.05, minSleepTime: 75 }); // Simulate DB call
+    const product = initialInventory[productId];
+    if (product) {
+      res.send(product);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (e) {
     // trace.getActiveSpan().recordException(e); // Redundant, since worker captures error in own span
     // Further thoughts: if not redundant, how about recording error in a middleware layer?
-    // NOTE: setting 500 status, express instrumentation will automatically
-    // tag the parent span (GET /products/:id) with error=true
+    // NOTE: setting 500 status, express instrumentation will automatically set
+    // the span statuscode to error/tag the parent span (GET /products/:id) with error=true
     res.sendStatus(500);
-    return;
-  }
-  const product = initialInventory[productId];
-  if (product) {
-    res.send(product);
-  } else {
-    res.sendStatus(404);
   }
 });
 
