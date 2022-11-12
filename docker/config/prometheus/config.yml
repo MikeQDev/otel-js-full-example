@@ -7,7 +7,11 @@ scrape_configs:
   #  scrape_interval: 5s
   #  static_configs:
   #    - targets: ["192.168.4.170:9464"]
+  - job_name: 'otelColl'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['otel-collector:8888'] # scrapes metrics of OTel collector from collectors :8888/metrics endpoint
   - job_name: 'demo'
     scrape_interval: 5s
     static_configs:
-      - targets: ['otel-collector:8889'] # scrapes metrics from OTel collectors /metrics endpoint
+      - targets: ['otel-collector:8889'] # scrapes metrics of apps from OTel collectors :8889/metrics endpoint

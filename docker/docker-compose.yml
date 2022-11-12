@@ -40,5 +40,7 @@ services:
       - 4317:4317
       - 13133:13133
       - 8889:8889
+      - 8888:8888 # metrics of OTel collector
+      # - 55679:55679 zpage extension doesn't seem to work
 networks:
   local-otel-experiment:
