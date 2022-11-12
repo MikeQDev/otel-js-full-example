@@ -20,7 +20,6 @@ const {
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc'); // exports traces over OTLP protocol (eg: to OTEL collector)
 
 // Metric dependencies
-const { metrics } = require('@opentelemetry/api-metrics'); // metrics API, use until stable/merged into @opentelemetrry/api
 const {
   MeterProvider,
   ConsoleMetricExporter,
@@ -29,7 +28,7 @@ const {
 const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-grpc'); // exports metrics over OTLP protocol (eg: to OTEL collector)
 
 // Locally log otel-related issues (eg: issue sending to collector)
-const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+const { diag, DiagConsoleLogger, DiagLogLevel, metrics } = require('@opentelemetry/api');
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 
 // DEV or PROD? If production, don't write telemetry to console

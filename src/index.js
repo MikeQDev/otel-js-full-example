@@ -1,5 +1,4 @@
-const { metrics } = require('@opentelemetry/api-metrics');
-const { trace } = require('@opentelemetry/api');
+const { trace, metrics } = require('@opentelemetry/api');
 const { doWork } = require('./services/syntheticWorker.js');
 
 // Obtain instruments, used to generate telemetry

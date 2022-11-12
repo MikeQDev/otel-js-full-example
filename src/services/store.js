@@ -1,5 +1,4 @@
-const { trace } = require('@opentelemetry/api');
-const { metrics } = require('@opentelemetry/api-metrics');
+const { trace, metrics } = require('@opentelemetry/api');
 const axios = require('axios');
 const express = require('express');
 const app = express();
