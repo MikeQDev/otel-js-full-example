@@ -35,8 +35,13 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 const exportOtelCollector = process.env.USE_COLLECTOR === 'Y' || false;
 const metricExportIntervalMs = 3000;
 
+const resource = new Resource({
+  [SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME,
+  [SemanticResourceAttributes.SERVICE_VERSION]: process.env.OTEL_SERVICE_VERSION,
+}); // TODO: figure out why OTEL_RESOURCE_ATTRIBUTES are not being honored https://opentelemetry.io/docs/reference/specification/resource/sdk/#specifying-resource-information-via-an-environment-variable
+
 // Metrics
-const meterProvider = new MeterProvider();
+const meterProvider = new MeterProvider({ resource });
 if (exportOtelCollector) {
   meterProvider.addMetricReader(
     new PeriodicExportingMetricReader({
@@ -55,10 +60,6 @@ if (exportOtelCollector) {
 metrics.setGlobalMeterProvider(meterProvider);
 
 // Traces
-const resource = new Resource({
-  [SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME,
-  [SemanticResourceAttributes.SERVICE_VERSION]: process.env.OTEL_SERVICE_VERSION,
-}); // TODO: figure out why OTEL_RESOURCE_ATTRIBUTES are not being honored https://opentelemetry.io/docs/reference/specification/resource/sdk/#specifying-resource-information-via-an-environment-variable
 registerInstrumentations({
   instrumentations: [
     new ExpressInstrumentation(),
