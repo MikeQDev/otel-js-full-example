@@ -33,7 +33,12 @@ app.get('/allItems', async function (req, res) {
       const allProductData = resp.data;
       const products = Object.keys(allProductData).map((productId) => {
         const product = allProductData[productId];
-        return { name: product.name, price: product.price, inStock: product.quantity > 0 };
+        return {
+          id: productId,
+          name: product.name,
+          price: product.price,
+          inStock: product.quantity > 0,
+        };
       });
       res.send(products);
     })
@@ -59,6 +64,7 @@ app.get('/getItem/:id', async function (req, res) {
       .then((resp) => {
         const product = resp.data;
         const transformedResponse = {
+          id: productId,
           name: product.name,
           price: product.price,
           inStock: product.quantity > 0,
