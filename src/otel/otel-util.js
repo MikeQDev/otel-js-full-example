@@ -35,6 +35,7 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 const exportOtelCollector = process.env.USE_COLLECTOR === 'Y' || false;
 const metricExportIntervalMs = 3000;
 
+// Shared across signals
 const resource = new Resource({
   [SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME,
   [SemanticResourceAttributes.SERVICE_VERSION]: process.env.OTEL_SERVICE_VERSION,
@@ -60,13 +61,6 @@ if (exportOtelCollector) {
 metrics.setGlobalMeterProvider(meterProvider);
 
 // Traces
-registerInstrumentations({
-  instrumentations: [
-    new ExpressInstrumentation(),
-    new HttpInstrumentation(),
-    // sqlite3 instrumentation goes here, once it's available
-  ],
-});
 const traceProvider = new NodeTracerProvider({ resource });
 if (exportOtelCollector) {
   traceProvider.addSpanProcessor(new SimpleSpanProcessor(new OTLPTraceExporter())); // Batch export for performance
@@ -76,3 +70,12 @@ if (exportOtelCollector) {
 traceProvider.register(); // Register SDK with API
 
 // Logs -- currently not supported? In development phase
+
+// Shared across signals. Must be called after previous instrument initialization, else won't capture metrics
+registerInstrumentations({
+  instrumentations: [
+    new ExpressInstrumentation(),
+    new HttpInstrumentation(),
+    // sqlite3 instrumentation goes here, once it's available
+  ],
+});
