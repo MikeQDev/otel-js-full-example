@@ -23,7 +23,7 @@ const requestLatencyHistogram = metrics
 // - hooking HTTP instrumentation to unset the span status?
 
 app.get('/', function (req, res) {
-  res.send('Welcome to the store');
+  res.send('Welcome to the store. Endpoints:\n- /allItems\n- /getItem/:id');
 });
 
 app.get('/allItems', async function (req, res) {

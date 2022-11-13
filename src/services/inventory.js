@@ -27,6 +27,12 @@ const initialInventory = {
   },
 };
 
+app.get('/', function (req, res) {
+  res.send(
+    "Welcome to inventory. Users shouldn't call this directly. Endpoints:\n- /products\n- /products/:id"
+  );
+});
+
 app.get('/products', function (req, res) {
   res.send(initialInventory);
 });
