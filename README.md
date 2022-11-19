@@ -43,7 +43,8 @@ _Note: if you cannot run docker containers for any reason, you can append :nocol
 2. `npm run start:docker:containers` # starts docker containers (OTel collector + backends)
 3. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
 4. `npm run start:store` # starts store service on port [21469](http://localhost:21469/)
-5. When done, stop docker containers with `npm run stop:docker:containers` and close terminal sessions running services
+5. `npm run start:client` # runs only-auto-instrumented client.js to send requests to store
+6. When done, stop docker containers with `npm run stop:docker:containers` and close terminal sessions running services
 
 ## Learning
 

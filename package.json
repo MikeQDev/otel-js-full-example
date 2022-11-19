@@ -11,6 +11,8 @@
     "start:store:nocollector": "OTEL_SERVICE_NAME=store OTEL_SERVICE_VERSION=0.2.1 node -r ./src/otel/otel-util.js src/services/store.js",
     "start:inventory": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=inventory OTEL_SERVICE_VERSION=0.1.0 node -r ./src/otel/otel-util.js src/services/inventory.js",
     "start:inventory:nocollector": "OTEL_SERVICE_NAME=inventory OTEL_SERVICE_VERSION=0.1.0 node -r ./src/otel/otel-util.js src/services/inventory.js",
+    "start:client": "USE_COLLECTOR=Y OTEL_SERVICE_NAME=client OTEL_SERVICE_VERSION=1.2.0 node -r ./src/otel/otel-util.js src/services/client.js",
+    "start:client:nocollector": "OTEL_SERVICE_NAME=client OTEL_SERVICE_VERSION=1.2.0 node -r ./src/otel/otel-util.js src/services/client.js",
     "prepare": "husky install"
   },
   "keywords": [],
