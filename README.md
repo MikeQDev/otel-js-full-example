@@ -44,6 +44,9 @@ _Note: if you cannot run docker containers for any reason, you can append :nocol
 3. `npm run start:inventory` # starts inventory service on port [21470](http://localhost:21470/products)
 4. `npm run start:store` # starts store service on port [21469](http://localhost:21469/)
 5. `npm run start:client` # runs only-auto-instrumented client.js to send requests to store
+
+- 5a. `npm run start:instrumentedClient` # runs instrumentedClient.js, which does same as client, but groups entire invocation into a single trace AND captures logs as events in main span (instead of `console.log`s)
+
 6. When done, stop docker containers with `npm run stop:docker:containers` and close terminal sessions running services
 
 ## Learning
