@@ -28,12 +28,16 @@ exporters: # downstream consumers/backends to store + display signals
     endpoint: 0.0.0.0:8889
     resource_to_telemetry_conversion:
       enabled: true
+  otlp/nr:
+    endpoint: https://otlp.nr-data.net:4317
+    headers:
+      api-key: REDACTED
 
 service: # 'pipeline' for each signal. NOTE: processors can be included as well
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [jaeger, zipkin, logging/debug]
+      exporters: [jaeger, zipkin, logging/debug] # add otlp/nr here if want to go to NR
     metrics:
       receivers: [otlp] #, prometheus]
       exporters: [logging/debug, prometheus]
